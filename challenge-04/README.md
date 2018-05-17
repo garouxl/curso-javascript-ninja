@@ -7,15 +7,33 @@ um único parâmetro como argumento. Essa função deve retornar `true` se o
 equivalente booleano para o valor passado no argumento for `true`, ou `false`
 para o contrário.
 */
-?
+var isTruthy = function (param) {
+ return param ? true : false
+ // return !!param // não achei legivel
+};
 
 // Invoque a função criada acima, passando todos os tipos de valores `falsy`.
-?
+isTruthy(false);
+isTruthy(null);
+isTruthy(undefined);
+isTruthy(NaN);
+isTruthy(0);
+isTruthy(-0);
+isTruthy("");
 
 /*
 Invoque a função criada acima passando como parâmetro 10 valores `truthy`.
 */
-?
+isTruthy(1);
+isTruthy("string");
+isTruthy([false, false]);
+isTruthy(true);
+isTruthy({});
+isTruthy(function () {});
+isTruthy(10+5);
+isTruthy({objeto: "a"});
+isTruthy([]);
+isTruthy(!!true);
 
 /*
 Declare uma variável chamada `carro`, atribuindo à ela um objeto com as
@@ -29,35 +47,54 @@ seguintes propriedades (os valores devem ser do tipo mostrado abaixo):
 - `assentos` - Number - cinco por padrão
 - `quantidadePessoas` - Number - zero por padrão
 */
-?
+var carro = {
+    marca: "Volvo",
+    modelo: "109",
+    placa: "XPTO-12",
+    ano: 1990,
+    cor: "preto",
+    quantasPortas: 4,
+    assentos: 5,
+    quantidadePessoas: 0
+}
 
 /*
 Crie um método chamado `mudarCor` que mude a cor do carro conforme a cor
 passado por parâmetro.
 */
-?
+carro.mudarCor = function(param) {
+    carro.cor = param;
+};
 
 /*
 Crie um método chamado `obterCor`, que retorne a cor do carro.
 */
-?
+carro.obterCor = function() {
+    return carro.cor;
+};
 
 /*
 Crie um método chamado `obterModelo` que retorne o modelo do carro.
 */
-?
+carro.obterModelo = function() {
+    return carro.modelo;
+};
 
 /*
 Crie um método chamado `obterMarca` que retorne a marca do carro.
 */
-?
+carro.obterMarca = function() {
+    return carro.marca;
+};
 
 /*
 Crie um método chamado `obterMarcaModelo`, que retorne:
 "Esse carro é um [MARCA] [MODELO]"
 Para retornar os valores de marca e modelo, utilize os métodos criados.
 */
-?
+carro.obterMarcaModelo = function() {
+    return "Marca: " + carro.obterMarca() + ", Modelo: " + carro.obterModelo();
+};
 
 /*
 Crie um método que irá adicionar pessoas no carro. Esse método terá as
