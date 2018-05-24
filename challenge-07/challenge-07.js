@@ -74,7 +74,7 @@ Só vamos mudar o range:
 console.log("Números pares entre 100 e 120:");
 for (var counter = 100; counter <= 120; counter++) {
   // corrigido
-  if (counter % 2 === 0) console.log(counter);
+  counter % 2 === 0 ? console.log(counter) : "";
   counter++;
 }
 
