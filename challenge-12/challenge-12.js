@@ -35,11 +35,10 @@ seguintes propriedades:
 `name`: String
 `pages`: Number
 */
-  books = [
-    { name: "O Pistoleiro", pages: 100 },
-    { name: "Canção ", pages: 500 },
-    { name: "Torre", pages: 950 }
-  ];
+  books.push({ name: "O Pistoleiro", pages: 100 });
+  books.push({ name: "Canção ", pages: 500 });
+  books.push({ name: "Torre", pages: 950 });
+
   console.log("\nLista de livros:");
 
   /*
@@ -90,9 +89,9 @@ no formato abaixo:
   }
 
   /*
-Crie um array chamado `myName`. Cada item desse array deve ser uma letra do
-seu nome. Adicione seu nome completo no array.
-*/
+  Crie um array chamado `myName`. Cada item desse array deve ser uma letra do
+  seu nome. Adicione seu nome completo no array.
+  */
   var myName = ["l", "e", "a", "n", "d", "r", "o"];
   console.log("\nMeu nome é:");
 
