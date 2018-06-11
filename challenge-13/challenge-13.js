@@ -8,7 +8,8 @@ usando o método visto na aula 13.
 */
   console.log("O array em formato de string é:");
   var myArr = [1, 2, "3", true, [5, 6]];
-  console.log(myArr.join());
+  console.log(myArr.toString());
+  //console.log(myArr.join());
 
   /*
 Crie 2 arrays `sul` e `sudeste`, que serão as regiões do Brasil.
@@ -29,9 +30,7 @@ concatenadas. Mostre o `brasil` no console.
 Adicione 3 novos estados da região Norte no início do array e mostre no console.
 */
   console.log("\nMais estados adicionados:");
-  brasil.unshift("Pará");
-  brasil.unshift("Amapá");
-  brasil.unshift("Maranhão");
+  brasil.unshift("Pará", "Amapá", "Maranhão");
   console.log(brasil);
 
   /*
@@ -140,7 +139,12 @@ Senão, mostre no console:
       return console.log("Sim, todos os estados tem mais de 7 letras!");
     return console.log("Nem todos os estados tem mais de 7 letras!");
   })();
-
+  // ou
+  console.log(
+    isSeven
+      ? "Sim, todos os estados tem mais de 7 letras!"
+      : "Nem todos os estados tem mais de 7 letras!"
+  );
   /*
 Percorra o array `brasil` e verifique se o Ceará está incluído, atribuindo o
 resultado à uma variável. Se esse estado existir no array, mostrar a frase no
@@ -157,6 +161,8 @@ Senão, mostrar a frase:
     if (isCeara) return console.log("Ceará está incluído!");
     return console.log("Ceará não foi incluído :(");
   })();
+  // ou
+  console.log(isCeara ? "Ceará está incluído!" : "Ceará não foi incluído :(");
 
   /*
 Percorra o array `newBrasil` e crie um novo array que some 1 no ID de cada
@@ -164,23 +170,34 @@ objeto desse array, e adicione a frase abaixo na propriedade `estado`:
 - "[ESTADO] pertence ao Brasil."
 Atribua o novo array a uma variável chamada `map`.
 */
-  // ?
+  var map = newBrasil.map(function(item, index) {
+    return {
+      id: ++item.id,
+      estado: "O " + item.estado + " pertence ao  Brasil"
+    };
+  });
 
   /*
 Mostre no console o array criado acima:
 */
   console.log("\nnewBrasil agora com mais informações:");
-  // ?
+  map.forEach(function(item) {
+    console.log(item);
+  });
 
   /*
 Filtre o array criado acima, retornando somente os estados que tiverem
 ID par. Atribua o valor à uma variável chamada `filter`.
 */
-  // ?
+  var filter = map.filter(function(item) {
+    return item.id % 2 === 0;
+  });
 
   /*
 Mostre o array filtrado acima no console.
 */
-  console.log("\nEstados com ID par:");
-  // ?
+  console.log("\nnewBrasil fitrado por par");
+  filter.forEach(function(item) {
+    console.log(item);
+  });
 })();
