@@ -35,7 +35,7 @@ as seguintes características:
     };
     this.addAge = function() {
       this.age += arguments[0];
-      return this;
+      return this; // por retornar o objeto podemos encadear outros metodos no objeto!
     };
   }
 
@@ -78,18 +78,20 @@ cada um. A frase deverá ser no formato:
 */
   console.log("\nNova idade das pessoas:");
 
-  leandro.addAge(10);
-  ciclana.addAge(10);
-  fulana.addAge(10);
-
   console.log(
-    leandro.getFullName() + " agora tem " + leandro.getAge() + " anos."
+    leandro.getFullName() +
+      " agora tem " +
+      leandro.addAge(10).getAge() +
+      " anos." // metodos encadeados
   );
   console.log(
-    ciclana.getFullName() + " agora tem " + ciclana.getAge() + " anos."
+    ciclana.getFullName() +
+      " agora tem " +
+      ciclana.addAge(10).getAge() +
+      " anos." // metodos encadeados
   );
   console.log(
-    fulana.getFullName() + " agora tem " + fulana.getAge() + " anos."
-  );
+    fulana.getFullName() + " agora tem " + fulana.addAge(10).getAge() + " anos."
+  ); // metodos encadeados
   // ?
 })();
