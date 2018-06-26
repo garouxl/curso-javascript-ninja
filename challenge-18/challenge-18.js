@@ -18,18 +18,19 @@ eles! Use um console.log para cada CPF.
 - "101.123-131x32"
 */
   console.log("Limpando CPFs:");
-  var cpf1, cpf2, cpf3, cpf4;
-  cpf1 = cleanCPF("049-214 3421-1");
-  cpf2 = cleanCPF("210.458.522-05");
-  cpf3 = cleanCPF("735 500 794 - 22");
-  cpf4 = cleanCPF("101.123-131x32");
+
   function cleanCPF(cpf) {
-    return cpf.replace(/[^\d]/g, "");
+    return cpf.replace(/[^\d]/g, ""); // /[\D]/g
   }
-  console.log(cpf1);
-  console.log(cpf2);
-  console.log(cpf3);
-  console.log(cpf4);
+  var cpfs = [
+    "049-214 3421-1",
+    "210.458.522-05",
+    "735 500 794 - 22",
+    "101.123-131x32"
+  ];
+  cpfs.forEach(function(curr) {
+    console.log(cleanCPF(curr));
+  });
 
   /*
 Usando os CPFs limpos acima, deixe-os com a formatação correta de CPF.
@@ -37,15 +38,23 @@ Ex.: "999.999.999-99"
 Mostre o resultado no console.
 */
   console.log("\nFormatando CPFs corretamente:");
-  var regex = /(\d{2,3})(\d{2,3})(\d{2,3})(\d{2})/g;
-  var format = function(fullMatch, grupo1, grupo2, grupo3, grupo4) {
-    return grupo1 + "." + grupo2 + "." + grupo3 + "-" + grupo4;
+  var regex = /(\d{3})(\d{3})(\d{3})(\d{2})/g;
+  var format = function() {
+    return (
+      arguments[1] +
+      "." +
+      arguments[2] +
+      "." +
+      arguments[3] +
+      "-" +
+      arguments[4]
+    );
     4;
   };
-  console.log(cpf1.replace(regex, "$1.$2.$3-$4"));
-  console.log(cpf2.replace(regex, format));
-  console.log(cpf3.replace(regex, "$1.$2.$3-$4"));
-  console.log(cpf4.replace(regex, format));
+  cpfs.forEach(function(curr) {
+    console.log(cleanCPF(curr).replace(regex, "$1.$2.$3-$4")); // com regex
+    console.log(cleanCPF(curr).replace(regex, format)); // com função
+  });
 
   /*
 Crie uma expressão regular que faça match com as palavras "junho" ou "julho",
@@ -62,7 +71,7 @@ O resultado deve ser:
     '\nMatch com as palavras "junho" ou "julho" para a frase "Os meses de janeiro, junho e julho começam com a letra j.":'
   );
   var phrase = "Os meses de janeiro, junho e julho começam com a letra j.";
-  console.log(phrase.match(/j[uo]\w+ +/g));
+  console.log(phrase.match(/ju\w+/g)); // ju[nl]ho
 
   /*
 Crie uma expressão regular que faça o match com a abertura de uma tag
@@ -114,11 +123,20 @@ https://regex101.com/#javascript e verifique se as capturas estão
 corretas, para depois aplicar no código ;)
 */
   console.log("\nFazer replace dos textos das tags:");
-  var regex = /(<\w+>)([\w\s?]+)/g;
+  var regex = /(<(\w+)>)([^<]+)(<\/\w+>)/g;
   var tagText =
-    "<h1>Titulo da pagina</h1><p>Este e um paragrafo</p><footer>Rodape</footer>";
-  var formatter = function(fullMatch, tag, text) {
-    return "O texto dentro da tag " + tag + " é " + text + "\n";
+    "<h1>Título da página</h1><p>Este é um parágrafo</p><footer>Rodapé</footer>";
+  var formatter = function(fullMatch, tag, tagText, text, tag2) {
+    return (
+      tag + 'O texto dentro da tag "' + tagText + '" é "' + text + tag2 + '"\n'
+    );
   };
   console.log(tagText.replace(regex, formatter));
+  //ou
+  console.log(
+    "<h1>Título da página</h1><p>Este é um parágrafo</p><footer>Rodapé</footer>".replace(
+      /(<(\w+)>)([^<]+)(<\/\w+>)/g,
+      '$1O texto dentro da tag "$2" é "$3"$4\n'
+    )
+  );
 })();
