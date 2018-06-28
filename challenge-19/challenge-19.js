@@ -92,5 +92,17 @@ para exemplificar.
     markup,
     "\n"
   );
-  // ?
+
+  function hasClass(markup, cssClass) {
+    var regex = new RegExp(
+      "[\"'](?:[\\w\\s]+)?" + cssClass + "(:?[\\w\\s]+)?[\"']",
+      "gm"
+    );
+    return regex.test(markup);
+  }
+  var classes = ["container", "text", "date", "excerpt", "main"];
+
+  classes.forEach(function(cssClass) {
+    console.log(hasClass(markup, cssClass) + " para a classe " + cssClass);
+  });
 })();
