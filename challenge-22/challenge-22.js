@@ -39,29 +39,34 @@
   Na primeira linha, dentro da função, deixe um console.log para mostrar todos
   os parâmetros passados para essa função.
   */
-  var sum = function(values) {
-    return Array.prototype.reduce.call(values, index, item);
-  }; //FIXME:
+  var sum = function() {
+    console.log("Parametros da função", arguments);
+    return Array.prototype.reduce.call(arguments, function(acc, item) {
+      return parseInt(acc) + parseInt(item); // +acc altera pra numero...
+    });
+  };
 
   /*
   Mostre no console que a função acima funciona, invocando-a em 3 console.log
   diferentes, com quantidades variáveis de parâmetros passados.
   */
   console.log("\nSomar alguns números:");
-  // ?
+  console.log(sum(5, 4, 6, 0));
+  console.log(sum(5, 2));
+  console.log(sum(5, 2, 4, 6, 9, 5));
 
   /*
   Declare uma variável chamada `userEntry`, que irá receber alguns valores
   entrados pelo usuário. Mostre para o usuário a seguinte frase:
   "Entre com alguns números que serão somados:"
   */
-  // ?
+  var userEntry = prompt("Entre com alguns números que serão somados:");
 
   /*
   Mostre no console o valor entrado pelo usuário:
   */
   console.log("\nEntrada do usuário:");
-  // ?
+  console.log(userEntry);
 
   /*
   Crie uma função chamada `justNumbers`, que recebe por parâmetro uma string
@@ -69,19 +74,28 @@
   da string. Mostre a representação em string dessa função no console.
   */
   console.log("\nFunção que limpa entrada do usuário (somente números):");
-  // ?
+  function justNumbers(params) {
+    return params.replace(/\D+/g, ",").split(",");
+  }
+  console.log(justNumbers.toString());
 
   /*
   Usando a função acima, faça a limpeza dos valores entrados pelo usuário,
   atribuindo o resultado à uma variável `numbers`.
   */
   console.log("\nEntrada do usuário limpa. Somente números:");
-  // ?
-
+  var numbers = justNumbers(userEntry);
+  console.log(numbers);
   /*
   Agora com o array de números, utilize a função `sum` para somar todos os
   números desse array e mostre o resultado no console.
   */
   console.log("\nSomar números entrados pelo usuário:");
-  // ?
+  console.log(sum.apply(sum, numbers)); //ao executarmos via apply, damos um novo contexto e uma lsita legivel de argumentos
+
+  //TESTES
+  console.log("testes de debug...");
+  console.log(sum(numbers)); // não funciona pois trata a lista de argumentos dentro do array como um
+  console.log("apply:", sum.apply(sum, [1, 1, 3, 5, 5]));
+  console.log("call: ", sum.call(sum, 1, 1, 2, 5));
 })(window, document);
