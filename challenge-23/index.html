@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Challenge 23</title>
+    <style>
+        input {
+            cursor: not-allowed;
+            width: 177px;
+            display: block;
+            margin: 0 0 1%;
+        }
+
+        button {
+            cursor: pointer;
+            display: block;
+            float: left;
+            margin: 0 1% 1% 0;
+        }
+
+        .numbers button:nth-child(6) {
+            clear: left
+        }
+
+        .signs button:first-child {
+            clear: left
+        }
+
+        .signs button {
+            padding: 1px 2.9px;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" data-js="input" value="0">
+    <div class="numbers">
+        <button data-js="button" value="0">0</button>
+        <button data-js="button" value="1">1</button>
+        <button data-js="button" value="2">2</button>
+        <button data-js="button" value="3">3</button>
+        <button data-js="button" value="4">4</button>
+        <button data-js="button" value="5">5</button>
+        <button data-js="button" value="6">6</button>
+        <button data-js="button" value="7">7</button>
+        <button data-js="button" value="8">8</button>
+        <button data-js="button" value="9">9</button>
+    </div>
+    <div class="signs">
+        <button data-js="button" value="+">+</button>
+        <button data-js="button" value="-">-</button>
+        <button data-js="button" value="*">*</button>
+        <button data-js="button" value="/">/</button>
+        <button data-js="button" value="=">=</button>
+        <button data-js="button" value="ce">ce</button>
+    </div>
+
+    <script src="challenge-23.js"></script>
+</body>
+
+</html>
