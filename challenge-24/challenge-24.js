@@ -9,20 +9,28 @@ listeners de eventos, etc);
 - faça refactories para melhorar esse código, mas de forma que o mantenha com a
 mesma funcionalidade.
 */
-(function() {
+(function(win, doc) {
   "use strict";
-  var DOMInputs = {
-    visor: document.querySelector('[data-js="visor"]'),
-    buttonsNumbers: document.querySelectorAll('[data-js="button-number"]'),
-    buttonsOperations: document.querySelectorAll(
-      '[data-js="button-operation"]'
-    ),
-    buttonCE: document.querySelector('[data-js="button-ce"]'),
-    buttonEqual: document.querySelector('[data-js="button-equal"]')
-  };
 
-  function setListeners (target, handler) {
-    if (target.length === undefined ) {
+  var DOMInputs;
+
+  function initialize() {
+    DOMInputs = {
+      visor: doc.querySelector('[data-js="visor"]'),
+      buttonsNumbers: doc.querySelectorAll('[data-js="button-number"]'),
+      buttonsOperations: doc.querySelectorAll('[data-js="button-operation"]'),
+      buttonCE: doc.querySelector('[data-js="button-ce"]'),
+      buttonEqual: doc.querySelector('[data-js="button-equal"]')
+    };
+
+    setListeners(DOMInputs.buttonsNumbers, handleClickNumber);
+    setListeners(DOMInputs.buttonsOperations, handleClickOperation);
+    setListeners(DOMInputs.buttonCE, handleClickCE);
+    setListeners(DOMInputs.buttonEqual, handleClickEqual);
+  }
+
+  function setListeners(target, handler) {
+    if (target.length === undefined) {
       return target.addEventListener("click", handler, false);
     }
     Array.prototype.forEach.call(target, function(button) {
@@ -69,7 +77,7 @@ mesma funcionalidade.
     };
   }
 
-  function  getAllValues() {
+  function getAllValues() {
     return DOMInputs.visor.value.match(/\d+[+x÷-]?/g);
   }
 
@@ -99,7 +107,10 @@ mesma funcionalidade.
     DOMInputs.visor.value = removeLastItemIfItIsAnOperator(
       DOMInputs.visor.value
     );
-    DOMInputs.visor.value = getAllValues().reduce(function(accumulated, actual) {
+    DOMInputs.visor.value = getAllValues().reduce(function(
+      accumulated,
+      actual
+    ) {
       var formatedValues = formatValues(accumulated, actual);
       return operation(
         formatedValues.firstValue,
@@ -109,8 +120,6 @@ mesma funcionalidade.
       );
     });
   }
-  setListeners(DOMInputs.buttonsNumbers, handleClickNumber);
-  setListeners(DOMInputs.buttonsOperations, handleClickOperation);
-  setListeners(DOMInputs.buttonCE, handleClickCE);
-  setListeners(DOMInputs.buttonEqual, handleClickEqual);
-})();
+
+  initialize();
+})(window, document);
