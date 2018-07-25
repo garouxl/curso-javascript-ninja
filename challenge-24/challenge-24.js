@@ -21,15 +21,14 @@ mesma funcionalidade.
     buttonEqual: document.querySelector('[data-js="button-equal"]')
   };
 
-  Array.prototype.forEach.call(DOMInputs.buttonsNumbers, function(button) {
-    button.addEventListener("click", handleClickNumber, false);
-  });
-  Array.prototype.forEach.call(DOMInputs.buttonsOperations, function(button) {
-    button.addEventListener("click", handleClickOperation, false);
-  });
-
-  DOMInputs.buttonCE.addEventListener("click", handleClickCE, false);
-  DOMInputs.buttonEqual.addEventListener("click", handleClickEqual, false);
+  function setListeners (target, handler) {
+    if (target.length === undefined ) {
+      return target.addEventListener("click", handler, false);
+    }
+    Array.prototype.forEach.call(target, function(button) {
+      button.addEventListener("click", handler, false);
+    });
+  }
 
   function handleClickNumber() {
     DOMInputs.visor.value += this.value;
@@ -70,6 +69,10 @@ mesma funcionalidade.
     };
   }
 
+  function  getAllValues() {
+    return DOMInputs.visor.value.match(/\d+[+x÷-]?/g);
+  }
+
   function operation(firstValue, lastValue, lastOperator, operator) {
     var operators = {
       "+": function() {
@@ -96,8 +99,7 @@ mesma funcionalidade.
     DOMInputs.visor.value = removeLastItemIfItIsAnOperator(
       DOMInputs.visor.value
     );
-    var allValues = DOMInputs.visor.value.match(/\d+[+x÷-]?/g);
-    DOMInputs.visor.value = allValues.reduce(function(accumulated, actual) {
+    DOMInputs.visor.value = getAllValues().reduce(function(accumulated, actual) {
       var formatedValues = formatValues(accumulated, actual);
       return operation(
         formatedValues.firstValue,
@@ -107,4 +109,8 @@ mesma funcionalidade.
       );
     });
   }
+  setListeners(DOMInputs.buttonsNumbers, handleClickNumber);
+  setListeners(DOMInputs.buttonsOperations, handleClickOperation);
+  setListeners(DOMInputs.buttonCE, handleClickCE);
+  setListeners(DOMInputs.buttonEqual, handleClickEqual);
 })();
