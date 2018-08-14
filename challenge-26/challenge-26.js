@@ -20,12 +20,41 @@ Dica: olhe os erros que acontecem no console, e vá resolvendo um a um.
 Só passe para o próximo problema quando tiver resolvido o anterior :)
 */
 // ?
+(function() {
+  "use strict";
+  function DOM(targetNode) {
+    this.element = document.querySelectorAll(targetNode);
+  }
 
-var $a = new DOM('[data-js="link"]');
-$a.on('click', function(e) {
-  e.preventDefault();
-  console.log('clicou');
-});
+  DOM.prototype.on = function(event, callBack) {
+    handleNodes(this.element, event, callBack, "addEventListener");
+  };
 
-console.log('Elementos selecionados:', $a.get());
-console.log('$a é filho de body?', $a.get()[0].parentNode === document.body);
+  DOM.prototype.off = function(event, callBack) {
+    handleNodes(this.element, event, callBack, "removeEventListener");
+  };
+
+  DOM.prototype.get = function() {
+    return this.element;
+  };
+
+  function handleNodes(elementList, event, callBack, listener) {
+    return elementList.forEach(function(item) {
+      item[listener](event, callBack);
+    });
+  }
+
+  var $a = new DOM('[data-js="link"]');
+  $a.on("click", function(e) {
+    e.preventDefault();
+    console.log("clicou");
+  });
+
+  $a.off("click", function(e) {
+    e.preventDefault();
+    console.log("clicou");
+  });
+
+  console.log("Elementos selecionados:", $a.get());
+  console.log("$a é filho de body?", $a.get()[0].parentNode === document.body);
+})();
