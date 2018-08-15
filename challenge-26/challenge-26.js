@@ -20,6 +20,7 @@ Dica: olhe os erros que acontecem no console, e vá resolvendo um a um.
 Só passe para o próximo problema quando tiver resolvido o anterior :)
 */
 // ?
+// minha versão
 (function() {
   "use strict";
   function DOM(targetNode) {
@@ -27,32 +28,67 @@ Só passe para o próximo problema quando tiver resolvido o anterior :)
   }
 
   DOM.prototype.on = function(event, callBack) {
-    handleNodes(this.element, event, callBack, "addEventListener");
+    this.handleNodes(this.element, event, callBack, "addEventListener");
   };
 
   DOM.prototype.off = function(event, callBack) {
-    handleNodes(this.element, event, callBack, "removeEventListener");
+    this.handleNodes(this.element, event, callBack, "removeEventListener");
   };
 
   DOM.prototype.get = function() {
     return this.element;
   };
 
-  function handleNodes(elementList, event, callBack, listener) {
+  DOM.prototype.handleNodes = function(elementList, event, callBack, listener) {
     return elementList.forEach(function(item) {
       item[listener](event, callBack);
     });
-  }
+  };
 
   var $a = new DOM('[data-js="link"]');
-  $a.on("click", function(e) {
+  $a.on("click", function clicker(e) {
     e.preventDefault();
-    console.log("clicou");
+    console.log("clicou-meu");
+    $a.off("click", clicker);
   });
 
-  $a.off("click", function(e) {
+  console.log("Elementos selecionados:", $a.get());
+  console.log("$a é filho de body?", $a.get()[0].parentNode === document.body);
+})();
+
+// versão curso
+(function() {
+  "use strict";
+
+  function DOM(elements) {
+    this.element = this.getDOMElements(elements);
+  }
+
+  DOM.prototype.getDOMElements = function(elements) {
+    return document.querySelectorAll(elements);
+  };
+
+  DOM.prototype.on = function(eventType, callBack) {
+    Array.prototype.forEach.call(this.element, function(element) {
+      element.addEventListener(eventType, callBack, false);
+    });
+  };
+
+  DOM.prototype.off = function(eventType, callBack) {
+    Array.prototype.forEach.call(this.element, function(element) {
+      element.removeEventListener(eventType, callBack, false);
+    });
+  };
+
+  DOM.prototype.get = function() {
+    return this.element;
+  };
+
+  var $a = new DOM('[data-js="link"]');
+  $a.on("click", function handleclick(e) {
     e.preventDefault();
     console.log("clicou");
+    $a.off("click", handleclick);
   });
 
   console.log("Elementos selecionados:", $a.get());
