@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Challenge-28</title>
+    <style>
+        body * {
+            font: normal 12px/14px Monoid;
+            display: block;
+            text-align: left;
+            padding: 5px 0;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="">
+        <label for="search">logradouro:</label>
+        <input data-js="search" name="search" type="text">
+        <input data-js="submit" type="submit" value="requisitar">
+    </form>
+    <p data-js="info">Status da requisição: <span></span></p>
+    <section>
+        <label for="logradouro">logradouro</label>
+        <input data-js="logradouro" name="logradouro" type="text">
+        <label for="bairro">bairro</label>
+        <input data-js="bairro" name="bairro" type="text">
+        <label for="estado">estado</label>
+        <input data-js="estado" name="estado" type="text">
+        <label for="cidade">cidade</label>
+        <input data-js="cidade" name="cidade" type="text">
+        <label for="cep">cep</label>
+        <input data-js="cep" name="cep" type="text">
+    </section>
+    <script src=challenge-28.js></script>
+</body>
+
+</html>
