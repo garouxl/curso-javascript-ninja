@@ -102,9 +102,10 @@
     };
   })();
 
-  win.APP = app;
+  app.init();
+  //win.APP = app;
 })(window.DOM, window.UTIL, window, document);
 
-window.setTimeout(function() {
+/* window.setTimeout(function () {
   APP.init();
-}, 2000);
+}, 2000); */

@@ -24,10 +24,12 @@
       },
 
       isFormNotFilled: function(TGT) {
-        return TGT.some(function(item) {
+        var hasError = false;
+        TGT.forEach(function(item) {
           item.style.borderColor = item.value === "" ? "red" : "inherit";
-          return item.value === "";
+          hasError = item.value === "" ? true : false;
         });
+        return hasError;
       },
 
       setMessage: function(TGT, type, color) {
@@ -50,7 +52,9 @@
         TGTEntries.forEach(function(item) {
           item.removeAttribute("disabled");
         });
-      }
+      },
+
+      verifyField: function name(params) {}
     };
   };
   win.UTIL = util();
