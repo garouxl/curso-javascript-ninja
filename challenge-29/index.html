@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Challenge-29</title>
+    <style>
+        body * {
+            font-family: Monoid;
+            font-size: 12px;
+            text-align: left;
+            padding: 5px 0;
+            margin: 5px 0;
+        }
+
+        label,
+        input,
+        button {
+            display: block;
+        }
+
+        label {
+            cursor: pointer;
+        }
+
+        button {
+            padding: 5px 2px;
+        }
+
+        input {
+            width: 90%
+        }
+
+        table {
+            float: left;
+            border: 1px solid #666;
+            border-radius: 5px;
+            border-spacing: 0px;
+            padding: 0;
+            margin: 0;
+            opacity: 0;
+            transition: 500ms ease-in-out;
+            max-width: 600px;
+
+        }
+
+        section {
+            border-right: 1px solid #666;
+            float: left;
+            width: 400px;
+            margin: 0 20px 0 0;
+        }
+
+        tr,
+        th {
+            border-bottom: 1px solid #666;
+            margin: 0;
+            padding: 5px;
+        }
+
+        tbody th:nth-child(odd) {
+            background: #eee
+        }
+
+        tr:last-child {
+            border-bottom: 0px
+        }
+
+        thead,
+        tfoot {
+            background: #66d;
+            color: #ffffff;
+            padding: 1px 2px;
+            margin: 0
+        }
+
+        img {
+            width: 100px;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 data-js="companyName"></h1>
+    <h2 data-js="companyFone"></h2>
+    <section>
+        <form data-js="form-register">
+            <legend>Cadastro de carro:</legend>
+            <label for="img">Imagem: </label>
+            <input disabled id="img" data-js="input-img" type="text">
+            <label for="model">Modelo/Marca</label>
+            <input disabled id="model" data-js="input-model" type="text">
+            <label for="year">Ano:</label>
+            <input disabled id="year" data-js="input-year" type="text">
+            <label for="plate">Placa</label>
+            <input disabled id="plate" data-js="input-plate" type="text">
+            <label for="color">Cor: </label>
+            <input disabled id="color" data-js="input-color" type="text">
+            <button disabled data-js="submit" type="submit">cadastrar</button>
+        </form>
+        <div data-js="status"></div>
+    </section>
+    <table>
+        <caption>Lista de carros cadastrados na loja:</caption>
+        <thead>
+            <tr>
+                <th>Imagem</th>
+                <th>Modelo</th>
+                <th>Ano</th>
+                <th>Placa</th>
+                <th>Cor</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <th colspan="5">Garou Carros&Carros</th>
+        </tfoot>
+        <tbody data-js="registered-cars">
+        </tbody>
+    </table>
+    <script src=dom.js></script>
+    <script src=util.js></script>
+    <script src=challenge-29.js></script>
+</body>
+
+</html>
