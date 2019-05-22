@@ -25,6 +25,7 @@ function adicionaValor (valor) {
 adicionaValor(resultado);
 
 // Qual o retorno da função? (Use comentários de bloco).
+outraVariavel
 /*
 O retorno da função será:
 "O valor da variável agora é 10"
@@ -39,7 +40,7 @@ Crie uma função com as seguintes características:
 function multiplicacao(x,y,z) {
     if (x === undefined || y === undefined || z === undefined) 
         return "Preencha todos os valores corretamente!";
-    return x * y * z + 5;
+    return x * y * z + 2;
 }
 
 // Invoque a função criada acima, passando só dois números como argumento.
@@ -60,7 +61,8 @@ Crie uma função com as seguintes características:
 5. Se nenhum argumento for passado, retorne o valor booleano `false`.
 6. E ainda, se nenhuma das condições acima forem atendidas, retorne `null`.
 */
-function verificaOperacoes(x,y,z) {
+function verificaOperacoesAula(x,y,z) {
+    debugger;
     if (x !== undefined && y === undefined && z === undefined)
         return x;
     else if (x !== undefined && y !== undefined && z === undefined)
@@ -69,7 +71,15 @@ function verificaOperacoes(x,y,z) {
         return (x+y) / z;
     else if (x === undefined && y === undefined && z === undefined) 
         return false;
-    else return null;
+    else return null; // nunca ira cair no null!
+}
+
+function verificaOperacoesMeu(x, y, z) {
+  debugger;
+  if (x !== undefined && y === undefined && z === undefined) return x;
+  if (x !== undefined && y !== undefined && z === undefined) return x + y;
+  if (x !== undefined && y !== undefined && z !== undefined) return (x + y) / z;
+  if (x === undefined && y === undefined && z === undefined) return false;
 }
 
 // Invoque a função acima utilizando todas as possibilidades (com nenhum argumento, com um, com dois e com três.) Coloque um comentário de linha ao lado da função com o resultado de cada invocação.
