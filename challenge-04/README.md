@@ -1,39 +1,36 @@
-# Desafio da semana #4
-
-```js
 /*
 Declare uma variável chamada `isTruthy`, e atribua a ela uma função que recebe
 um único parâmetro como argumento. Essa função deve retornar `true` se o
 equivalente booleano para o valor passado no argumento for `true`, ou `false`
 para o contrário.
 */
-var isTruthy = function(param) {
-  return param ? true : false;
-  // return !!param // não achei legivel
+
+var isTruthy = function (param) {
+  return !!param;
 };
 
 // Invoque a função criada acima, passando todos os tipos de valores `falsy`.
 isTruthy(false);
+isTruthy(0);
+isTruthy(-1);
 isTruthy(null);
 isTruthy(undefined);
-isTruthy(NaN);
-isTruthy(0);
-isTruthy(-0);
 isTruthy("");
+isTruthy(NaN);
 
 /*
 Invoque a função criada acima passando como parâmetro 10 valores `truthy`.
 */
 isTruthy(1);
-isTruthy("string");
-isTruthy([false, false]);
-isTruthy(true);
-isTruthy({});
-isTruthy(function() {});
-isTruthy(10 + 5);
-isTruthy({ objeto: "a" });
+isTruthy(" ");
 isTruthy([]);
-isTruthy(!!true);
+isTruthy({});
+isTruthy(function(){});
+isTruthy([1,2,3]);
+isTruthy("um valor");
+isTruthy(true);
+isTruthy([1,2,3,4]);
+isTruthy(-5);
 
 /*
 Declare uma variável chamada `carro`, atribuindo à ela um objeto com as
@@ -47,25 +44,25 @@ seguintes propriedades (os valores devem ser do tipo mostrado abaixo):
 - `assentos` - Number - cinco por padrão
 - `quantidadePessoas` - Number - zero por padrão
 */
+
 var carro = {
-  marca: "Volvo",
-  modelo: "109",
-  placa: "XPTO-12",
-  ano: 1990,
-  cor: "preto",
-  quantasPortas: 4,
+  marca: "Honda",
+  modelo: "Roadster",
+  placa: "GRL-0101",
+  ano: 2014,
+  cor: "vermelho",
+  quantasPortas: 2,
   assentos: 5,
   quantidadePessoas: 0
-};
 
+};
 /*
 Crie um método chamado `mudarCor` que mude a cor do carro conforme a cor
 passado por parâmetro.
 */
-carro.mudarCor = function(param) {
-  carro.cor = param;
+carro.mudarCor = function(novaCor) {
+  carro.cor = novaCor;
 };
-
 /*
 Crie um método chamado `obterCor`, que retorne a cor do carro.
 */
@@ -77,13 +74,13 @@ carro.obterCor = function() {
 Crie um método chamado `obterModelo` que retorne o modelo do carro.
 */
 carro.obterModelo = function() {
-  return carro.modelo;
+  return carro.modelo
 };
 
 /*
 Crie um método chamado `obterMarca` que retorne a marca do carro.
 */
-carro.obterMarca = function() {
+carro.obterMarca = function () {
   return carro.marca;
 };
 
@@ -92,8 +89,8 @@ Crie um método chamado `obterMarcaModelo`, que retorne:
 "Esse carro é um [MARCA] [MODELO]"
 Para retornar os valores de marca e modelo, utilize os métodos criados.
 */
-carro.obterMarcaModelo = function() {
-  return "Marca: " + carro.obterMarca() + ", Modelo: " + carro.obterModelo();
+carro.obterMarcaModelo = function () {
+  return "Esse carro é um " + carro.marca + " " + carro.modelo; 
 };
 
 /*
@@ -112,53 +109,46 @@ mostrar quantos assentos ainda podem ser ocupados, com a frase:
 - Se couber somente mais uma pessoa, mostrar a palavra "pessoa" no retorno
 citado acima, no lugar de "pessoas".
 */
-carro.adicionaPessoas = function(numPessoas) {
-  // refatorar para ter um metodo só pra adicionar e remover
-  // dica 2 ifs um pra carro lotado, um pra total de assentos
-  if (carro.assentos === carro.quantidadePessoas)
+carro.adicionaPessoasMeu = function (novasPessoas) {
+  if ( carro.assentos - carro.quantidadePessoas === 0 )
     return "O carro já está lotado!";
-  if (numPessoas > carro.assentos - carro.quantidadePessoas) {
-    var vagas = carro.assentos - carro.quantidadePessoas;
-    var plural = vagas === 1 ? "" : "s";
-    frase = "Só cabem mais " + vagas + " pessoa" + plural + "!";
-    return frase;
+  if ( carro.quantidadePessoas < carro.assentos && novasPessoas <= 
+  carro.assentos - carro.quantidadePessoas ) {
+    carro.quantidadePessoas += novasPessoas;
+    var pessoa = carro.quantidadePessoas === 1 ? "pessoa" : "pessoas";  
+    return "Já temos " + carro.quantidadePessoas + " " + pessoa + " no carro!";
   }
-  if (carro.quantidadePessoas < carro.assentos) {
-    var frase;
-    carro.quantidadePessoas += numPessoas;
-    if (numPessoas === carro.assentos - carro.quantidadePessoas) {
-      var vagas = carro.assentos - carro.quantidadePessoas;
-      var plural = vagas === 1 ? "" : "s";
-      frase =
-        "já temos " +
-        carro.quantidadePessoas +
-        " pessoas no carro, só cabem mais " +
-        vagas +
-        " pessoa" +
-        plural +
-        "!";
-    } else {
-      frase = "Já temos " + carro.quantidadePessoas + " pessoa no carro!";
-    }
+  if ( carro.quantidadePessoas < carro.assentos && novasPessoas > 
+  carro.assentos - carro.quantidadePessoas  ) {
+    var restante = carro.assentos - carro.quantidadePessoas;
+    var pessoa = restante === 1 ? "pessoa" : "pessoas";
+    return "Só cabem mais " + restante + " " + pessoa + "!";
   }
-  return frase;
 };
 
 //Adicionado mais um metodo: para remover pessoas :)
-carro.removerPessoas = function(numPessoas) {
-  if (carro.quantidadePessoas === 0) return "Não há pessoas no carro";
-  if (numPessoas <= carro.quantidadePessoas) {
-    carro.quantidadePessoas -= numPessoas;
-    var removido = numPessoas,
-      plural = removido > 1 ? "s" : "",
-      frase = "Removido: " + removido + " pessoa" + plural + ".";
-  } else {
-    var frase =
-      "Não é possivel remover mais que " +
-      carro.quantidadePessoas +
-      " pessoas!";
+carro.removerPessoas = function (numeroPessoa) {
+  var plural = numeroPessoa === 1 ? "pessoa foi removida" : "pessoas foram removidas";
+  if (carro.quantidadePessoas === 0 )
+    return "Foram removidas todas as pessoas";
+  if ( numeroPessoa > carro.quantidadePessoas )
+    return "O valor excede o número total de pessoas no carro";
+  carro.quantidadePessoas -= numeroPessoa;
+  return numeroPessoa + " " + plural + ", sobraram: " + carro.quantidadePessoas;
+};
+
+carro.adicionaPessoas = function (numeroPessoas) {
+  var totalPessoas = carro.quantidadePessoas + numeroPessoas;
+  var assentosDisponiveis = carro.assentos - carro.quantidadePessoas;
+  var plural = assentosDisponiveis === 1 ? "pessoa" : "pessoas";
+  if (carro.quantidadePessoas === carro.assentos && totalPessoas >= carro.assentos) {
+    return "O carro já está lotado";
   }
-  return frase;
+  if (totalPessoas > carro.assentos ) {
+    return "Só cabem mais " + assentosDisponiveis + " " + plural +  "!"
+  }
+  carro.quantidadePessoas += numeroPessoas;
+  return "Já temos " + carro.quantidadePessoas + " pessoas no carro!";
 };
 /*
 Agora vamos verificar algumas informações do carro. Para as respostas abaixo,
@@ -168,7 +158,7 @@ retornar algum valor.
 
 Qual a cor atual do carro?
 */
-carro.obterCor(); // preto
+carro.obterCor(); // vermelho
 
 // Mude a cor do carro para vermelho.
 carro.mudarCor("vermelho");
