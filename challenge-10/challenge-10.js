@@ -1,8 +1,10 @@
-(function() {
-  /*
+/*
 Crie uma IIFE que envolva todo esse arquivo (inclusive esse comentário),
 e faça a indentação correta.
 */
+
+(function() {
+  "use strict";
 
   /*
 Sem alterar os códigos nos `console.log` abaixo, faça com que o retorno
@@ -10,10 +12,10 @@ deles seja "true", usando os Wrapper Objects como "conversores" nos valores
 das variáveis. Analise o que está sendo impresso no console para saber como
 resolver o problema corretamente.
 */
-  var five = new Number("5").valueOf();
+  var five = Number("5");
   console.log(five + " é número?", typeof five === "number");
 
-  var concat = new String(10).valueOf() + 10;
+  var concat = String(10) + String(10);
   console.log(
     '"' + concat + '" é uma string? E é igual a "1010"?',
     typeof concat === "string"
@@ -57,10 +59,9 @@ Caso contrário, "false".
 - O desafio é fazer o retorno sem usar "if" ou "switch".
 */
   function isOperatorValid(operator) {
-    return !!operation[operator];
-    // mais legivel abaixo
-    //return operation[operator] !== undefined;
+    return Boolean(operation[operator]);
   }
+
   /*
 Agora vamos criar a calculadora.
 - Crie uma função chamada `calculator`, que receberá como parâmetro um
@@ -73,12 +74,16 @@ parâmetros;
 operador passado para a função "calculator", e passando para esse método
 os dois parâmetros da função de retorno de "calculator".
 */
+  // ?
   function calculator(operator) {
-    if (!isOperatorValid(operator)) return false;
-    return function(num1, num2) {
-      if (typeof num1 !== "number" || typeof num2 !== "number") return false;
-      return operation[operator](num1, num2);
-    };
+    if (isOperatorValid(operator)) {
+      return function(num1, num2) {
+        if (typeof num1 === "number" || typeof num2 === "number")
+          return operation[operator](num1, num2);
+        return false;
+      };
+    }
+    return false;
   }
 
   /*
@@ -99,7 +104,7 @@ Essa função deverá retornar a frase:
 'Operação "[OPERATOR]" não permitida!'
 */
   function showErrorMessage(operator) {
-    return 'Operação "' + operator + '" não é permitida!';
+    return "Operação " + operator + " não é permitida!";
   }
 
   /*
@@ -110,14 +115,15 @@ PASSO 1:
 */
   var number1 = 0;
   var number2 = 0;
-  var operationSignal;
+  operationSignal;
+
   /*
 PASSO 2:
 Atribua à variável operationSignal o operador de soma, e declare uma
 variável chamada "sum", que receba a função "calculator", passando por
 parâmetro a variável que recebeu o sinal da operação.
 */
-  operationSignal = "+";
+  var operationSignal = "+";
   var sum = calculator(operationSignal);
 
   /*
@@ -133,8 +139,8 @@ parâmetros para o método "log" de "console":
 - Se "sum" for "false", mostrar no console a mensagem de erro.
 */
   if (sum) {
-    number1 = 5;
-    number2 = 3;
+    number1 = 20;
+    number2 = 30;
     console.log(
       showOperationMessage(operationSignal, number1, number2),
       sum(number1, number2)
@@ -142,72 +148,44 @@ parâmetros para o método "log" de "console":
   } else {
     console.log(showErrorMessage(operationSignal));
   }
+
   /*
 Repita desde o "PASSO 2" com as operações de subtração, multiplicação,
 divisão e resto. Crie variáveis com os nomes "subtraction",
 "multiplication", "division" e "mod".
 */
-  operationSignal = "-";
-  var subtraction = calculator(operationSignal);
-  if (subtraction) {
-    number1 = 5;
-    number2 = 3;
-    console.log(
-      showOperationMessage(operationSignal, number1, number2),
-      subtraction(number1, number2)
-    );
-  } else {
-    console.log(showErrorMessage(operationSignal));
+
+  // melhorando a calc
+  function execCalculator(number1, number2, operationSignal) {
+    var operation = calculator(operationSignal);
+    if (operation) {
+      return console.log(
+        showOperationMessage(operationSignal, number1, number2),
+        operation(number1, number2)
+      );
+    } else {
+      return console.log(showErrorMessage(operationSignal));
+    }
   }
-  operationSignal = "*";
-  var multiplication = calculator(operationSignal);
-  if (multiplication) {
-    number1 = 5;
-    number2 = 3;
-    console.log(
-      showOperationMessage(operationSignal, number1, number2),
-      multiplication(number1, number2)
-    );
-  } else {
-    console.log(showErrorMessage(operationSignal));
-  }
-  operationSignal = "/";
-  var division = calculator(operationSignal);
-  if (division) {
-    number1 = 5;
-    number2 = 3;
-    console.log(
-      showOperationMessage(operationSignal, number1, number2),
-      division(number1, number2)
-    );
-  } else {
-    console.log(showErrorMessage(operationSignal));
-  }
-  operationSignal = "%";
-  var mod = calculator(operationSignal);
-  if (mod) {
-    number1 = 5;
-    number2 = 3;
-    console.log(
-      showOperationMessage(operationSignal, number1, number2),
-      mod(number1, number2)
-    );
-  } else {
-    console.log(showErrorMessage(operationSignal));
-  }
+
+  execCalculator(50, 20, "-");
+  execCalculator(10, 20, "*");
+  execCalculator(1000, 20, "/");
+  execCalculator(50, 5, "%");
 
   /*
 Repita o PASSO 2 novamente, mas passando um operador inválido, para ver se
 a mensagem de erro será mostrada no console.
 */
-  operationSignal = ">";
-  var other = calculator(operationSignal);
-  if (other) {
-    number1 = 5;
-    number2 = 3;
+  var operationSignal = "x";
+  var outro = calculator(operationSignal);
+
+  if (outro) {
+    number1 = 20;
+    number2 = 30;
     console.log(
       showOperationMessage(operationSignal, number1, number2),
-      other(number1, number2)
+      outro(number1, number2)
     );
   } else {
     console.log(showErrorMessage(operationSignal));
