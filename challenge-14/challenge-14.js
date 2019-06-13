@@ -1,8 +1,8 @@
-(function() {
-  /*
+/*
 Envolva todo o código desse desafio em uma IIFE.
 */
-
+(function() {
+  "use strict";
   /*
 Crie um array chamado numberObjects. Esse array deve ter 10 elementos. Cada
 elemento será um objeto no formato:
@@ -12,21 +12,23 @@ Mostre esse array no console.
 */
   console.log("Number Objects Array:");
   var numberObjects = [];
+
   for (var i = 1; i <= 10; i++) {
     numberObjects.push({ number: i });
   }
-  console.log(numberObjects);
+
+  numberObjects.forEach(item => console.log(item));
 
   /*
 Crie um array chamado `justNumbers`, que terá como elementos somente os
 números do array criado acima. Mostre esse novo array no console.
 */
   console.log("\nJust Numbers:");
-  var justNumber = numberObjects.map(function(item) {
+  var justNumbers = numberObjects.map(function(item) {
     return item.number;
   });
-  console.log(justNumber);
-  // ?
+
+  console.log(justNumbers.toString());
 
   /*
 Crie um novo array chamado `justMod2Or3`, que receberá do array criado acima
@@ -34,10 +36,11 @@ somente os números que forem divisíveis por 2 ou 3. Mostre esse novo array
 no console.
 */
   console.log("\nJust module of division by 2 or 3:");
-  var justMod2Or3 = justNumber.filter(function(item) {
+  var justMod2Or3 = justNumbers.filter(function(item) {
     return item % 2 === 0 || item % 3 === 0;
   });
-  console.log(justMod2Or3);
+
+  console.log(justMod2Or3.join("; "));
 
   /*
 Declare uma variável chamada operation que receba, do array criado acima,
@@ -60,7 +63,7 @@ console.
 */
   console.log("\nOperation 2:");
   var operation2 = justMod2Or3.reduceRight(function(acc, item) {
-    return (acc + 1) * item;
+    return (acc = (acc + 1) * item);
   }, 0);
   console.log(operation2);
 
@@ -74,27 +77,32 @@ falada, como se você estivesse falando em código xD
 */
   console.log('\nSeu nome na língua do "P":');
   var name = ["le", "an", "dro"];
-  var pName = name.reduce(function(acc, item) {
-    return acc + "P" + item;
-  }, "");
-  console.log(pName);
+
+  console.log(
+    "Nome na lingua do P: ",
+    name.reduce(function(acc, item) {
+      return acc + "P" + item;
+    }, "")
+  );
 
   /*
 Crie uma variável chamada `inversedName`, que reduzirá o array em uma string
 e atribuirá o seu nome invertido (usando o array criado acima).
 */
   console.log("\nInversed Name:");
-  var name = ["le", "an", "dro"];
-  var NameI = name.reduceRight(function(acc, item) {
-    return acc + item;
+  var inversedName = name.reduceRight(function(acc, item) {
+    return (acc += item);
   }, "");
-  console.log(NameI + " ou " + name.reverse().join(""));
+
+  console.log(inversedName);
 
   /*
 Mostre no console o array `numberObjects`.
 */
   console.log("\nNumber objects");
-  console.log(numberObjects);
+  numberObjects.forEach(function(item) {
+    console.log(item);
+  });
 
   /*
 Verifique se existem em algum índice de numberObjects um objeto ìgual a
@@ -105,17 +113,14 @@ Senão, mostre a frase:
 Consegue prever o resultado? Deixe uma mensagem no console tentando explicar
 o que acontece ;)
 */
-  console.log("\nExiste um { number: 2 } em numberObjects?"); // erro
-  var teste = numberObjects.indexOf({ number: 2 }) !== -1;
+  console.log("\nExiste um { number: 2 } em numberObjects?");
   console.log(
-    teste
+    numberObjects.indexOf({ number: 2 },0) != -1
       ? "Existe um objeto { number: 2 } em numberObjects!"
       : "Não existe um objeto { number: 2 } em numberObjects :("
   );
 
-  console.log(
-    "\nO acima não funciona pois estamos testando um novo objeto, diferente da versão abaixo:"
-  );
+  console.log("não, pois é um novo objeto que está sendo testado");
 
   /*
 Fazendo o mesmo do exercício acima, mas começando a buscar do último índice,
@@ -124,10 +129,18 @@ será que obtemos um resultado diferente? Faça a busca a partir do índice 2.
   console.log(
     "\nE buscando a partir do último índice, o { number: 2 } existe?"
   );
-  var obj = numberObjects[1];
-  var teste2 = numberObjects.lastIndexOf(obj, 2) !== -1;
   console.log(
-    teste2
+    numberObjects.lastIndexOf({ number: 2 },2) != -1
+      ? "Existe um objeto { number: 2 } em numberObjects!"
+      : "Não existe um objeto { number: 2 } em numberObjects :("
+  );
+
+  console.log("não, pois é um novo objeto que está sendo testado");
+  
+  // para retornar TRUE:
+  var obj = numberObjects[1]; // é copiado a referencia ao valor
+  console.log(
+    numberObjects.lastIndexOf(obj) != -1
       ? "Existe um objeto { number: 2 } em numberObjects!"
       : "Não existe um objeto { number: 2 } em numberObjects :("
   );
@@ -139,7 +152,6 @@ formato de String.
   console.log(
     "\njustMod2Or3 é um array? Se for, a representação dele em String é:"
   );
-  var isArray = Array.isArray(justMod2Or3);
-  console.log(isArray ? justMod2Or3.toString() : "");
-  // ?
+  if (Array.isArray(justMod2Or3))
+    console.log("Sim, é um array:",justMod2Or3.toString());
 })();
