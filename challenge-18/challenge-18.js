@@ -1,11 +1,11 @@
-(function() {
-  "use strict";
-
-  /*
+/*
 1. Envolva todo o conteúdo desse desafio em uma IIFE.
 2. Adicione a diretiva 'use strict';
 3. Crie um arquivo index.html e adicione esse script à ele.
 */
+
+(function() {
+  "use strict";
 
   /*
 Crie uma função chamada `cleanCPF`, que receba um CPF por parâmetro, e
@@ -17,19 +17,17 @@ eles! Use um console.log para cada CPF.
 - "735 500 794 - 22"
 - "101.123-131x32"
 */
-  console.log("Limpando CPFs:");
+  
+  var cpfs = ["049-214 3421-1","210.458.522-05","735 500 794 - 22","101.123-131x32"]
 
+  console.log("Limpando CPFs:");
   function cleanCPF(cpf) {
-    return cpf.replace(/[^\d]/g, ""); // /[\D]/g
+    return cpf.replace(/\D+/g, "");
   }
-  var cpfs = [
-    "049-214 3421-1",
-    "210.458.522-05",
-    "735 500 794 - 22",
-    "101.123-131x32"
-  ];
-  cpfs.forEach(function(curr) {
-    console.log(cleanCPF(curr));
+
+  cpfs.forEach((cpf) => {
+    cpf = cleanCPF(cpf);
+    console.log(cpf);
   });
 
   /*
@@ -38,23 +36,48 @@ Ex.: "999.999.999-99"
 Mostre o resultado no console.
 */
   console.log("\nFormatando CPFs corretamente:");
-  var regex = /(\d{3})(\d{3})(\d{3})(\d{2})/g;
-  var format = function() {
-    return (
-      arguments[1] +
-      "." +
-      arguments[2] +
-      "." +
-      arguments[3] +
-      "-" +
-      arguments[4]
-    );
-    4;
-  };
-  cpfs.forEach(function(curr) {
-    console.log(cleanCPF(curr).replace(regex, "$1.$2.$3-$4")); // com regex
-    console.log(cleanCPF(curr).replace(regex, format)); // com função
+  function formatCPF() {
+    return arguments[0].replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, "$1.$2.$3-$4");
+  }
+
+  cpfs.forEach((cpf) => {
+    cpf = formatCPF(cpf);
+    console.log(cpf);
   });
+
+  // formatando os CPFs com construtor
+
+  function CpfFormatter(cpf) {
+    this.cpf = cpf;
+    this.getCPF = function getCPF() {
+      return this.cpf;
+    };
+    this.cleaner = function cleaner() {
+      this.cpf = this.cpf.replace(/\D+/g, "");
+      return this;
+    };
+    this.formatter = function formatter() {
+      this.cpf = this.cpf.replace(
+        /(\d{3})(\d{3})(\d{3})(\d{2})/g,
+        "$1.$2.$3-$4"
+      );
+      return this;
+    };
+  }
+
+  var CpfFormat1 = new CpfFormatter("049-214 3421-1");
+  var CpfFormat2 = new CpfFormatter("210.458.522-05");
+  var CpfFormat3 = new CpfFormatter("735 500 794 - 22");
+  var CpfFormat4 = new CpfFormatter("049-214 3421-1");
+  var cpfArr = [CpfFormat1, CpfFormat2, CpfFormat3, CpfFormat4]
+
+  console.log("\nFormatando CPFs corretamente:");
+
+  cpfArr.forEach ((cpf)=> {
+    console.log(cpf.cleaner().formatter().getCPF());
+  })
+
+  
 
   /*
 Crie uma expressão regular que faça match com as palavras "junho" ou "julho",
@@ -70,8 +93,8 @@ O resultado deve ser:
   console.log(
     '\nMatch com as palavras "junho" ou "julho" para a frase "Os meses de janeiro, junho e julho começam com a letra j.":'
   );
-  var phrase = "Os meses de janeiro, junho e julho começam com a letra j.";
-  console.log(phrase.match(/ju\w+/g)); // ju[nl]ho
+  var regex = /ju[nl]ho/g;
+  console.log("Os meses de janeiro, junho e julho começam com a letra j.".match(regex))
 
   /*
 Crie uma expressão regular que faça o match com a abertura de uma tag
@@ -80,12 +103,11 @@ Ex.: "<div>", "<section>", "<blockquote>".
 Use o método match e faça o teste com a marcação abaixo:
 "<div><section><blockquote>Texto <img /></blockquote></section></div>"
 O resultado deve ser:
-["<div>", "<section>", "<blockquote>"]
+["<>", "<section>", "<blockquote>"]
 */
   console.log("\nMatch com a abertura de uma tag HTML:");
-  var tags =
-    "<div><section><blockquote>Texto <img /></blockquote></section></div>";
-  console.log(tags.match(/<\w+>/g));
+  var regex = /<\w+>/g;
+  console.log("<div><section><blockquote>Texto <img /></blockquote></section></div>".match(regex))
 
   /*
 Crie uma expressão regular que faça o match com uma tag HTML vazia, casando
@@ -97,8 +119,9 @@ O resultado deve ser:
 ["<li></li>", "<li></li>", "<span></span>"]
 */
   console.log("\nMatch com tags HTML vazias (abertura e fechamento da tag):");
-  var tags2 = "<div><ul><li></li><li></li><li><span></span></li></ul></div>";
-  console.log(tags2.match(/<\w+><\/\w+>/g));
+  console.log("\nMatch com a abertura de uma tag HTML:");
+  var regex = /<\w+><\/\w+>/g;
+  console.log("<div><ul><li></li><li></li><li><span></span></li></ul></div>".match(regex))
 
   /*
 Vamos complicar um pouco agora :D
@@ -106,6 +129,7 @@ Vamos complicar um pouco agora :D
 Crie uma expressão regular que faça o match com um texto existente dentro de
 uma tag HTML. O texto deve ser capturado e substituído por:
 'O texto dentro da tag "[NOME DA TAG]" é "[TEXTO]"'
+
 
 Use a marcação abaixo para fazer o replace:
 "<h1>Título da página</h1><p>Este é um parágrafo</p><footer>Rodapé</footer>"
@@ -123,20 +147,10 @@ https://regex101.com/#javascript e verifique se as capturas estão
 corretas, para depois aplicar no código ;)
 */
   console.log("\nFazer replace dos textos das tags:");
-  var regex = /(<(\w+)>)([^<]+)(<\/\w+>)/g;
-  var tagText =
-    "<h1>Título da página</h1><p>Este é um parágrafo</p><footer>Rodapé</footer>";
-  var formatter = function(fullMatch, tag, tagText, text, tag2) {
-    return (
-      tag + 'O texto dentro da tag "' + tagText + '" é "' + text + tag2 + '"\n'
-    );
-  };
-  console.log(tagText.replace(regex, formatter));
-  //ou
-  console.log(
-    "<h1>Título da página</h1><p>Este é um parágrafo</p><footer>Rodapé</footer>".replace(
-      /(<(\w+)>)([^<]+)(<\/\w+>)/g,
-      '$1O texto dentro da tag "$2" é "$3"$4\n'
-    )
-  );
+  var regex = /<(\w+)>([^<]+)/g;
+  var text = "<h1>Título da página</h1><p>Este é um parágrafo</p><footer>Rodapé</footer>";
+  text.replace(regex, function (fullmatch, tag, texto) {
+    console.log(`<${tag}>O texto dentro da tag "${tag}" é "${texto}" </${tag}>\n`)
+  } );
+  console.log("OUTRO\n", text.replace(regex, `<$1>O texto dentro da tag "$1" é "$2" </$1>\n`));
 })();
