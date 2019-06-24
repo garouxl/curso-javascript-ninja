@@ -143,7 +143,7 @@ Com o que vimos até agora, você consegue fazer :D
 Mostre a regex no console.
 */
   console.log("\nRegex que vai fazer o match com as datas do texto:");
-  var regexDate = /(\d\d) de (junho|julho) de (\d\d\d\d)/gi;
+  var regexDate = /(\d\d) de (ju[nl]ho) de (\d\d\d\d)/g;
   console.log(regexDate);
 
   /*
