@@ -1,10 +1,10 @@
-(function() {
-  "use strict";
-  /*
+/*
 1. Envolva todo o conteúdo desse desafio em uma IIFE.
 2. Adicione a diretiva 'use strict';
 3. Crie um arquivo index.html e adicione esse script à ele.
 */
+(function() {
+  "use strict";
 
   /*
 Alguns detalhes importantes que faltou falar na aula:
@@ -27,7 +27,7 @@ no console:
 */
   console.log("Regex para números usando o construtor:");
   var justNumbersRegex = new RegExp("^\\d+", "gm");
-  console.log(justNumbersRegex);
+  console.log("Regex:", justNumbersRegex);
 
   /*
 Verifique se a regex acima casa com o texto na variável `text`, mostrando o
@@ -37,6 +37,7 @@ resultado no console. O resultado deve ser:
   var text =
     "10 anos.\n50 discos vendidos.\nE nem 10% dos meus amigos o conhece.";
   console.log("\nNúmeros no início da linha do texto:\n" + text, "\n");
+  
   console.log(text.match(justNumbersRegex));
 
   /*
@@ -48,8 +49,8 @@ linha, independente de quantos caracteres de número estiverem juntos.
 Mostre a regex no console:
 */
   console.log("\nRegex para números somente no final das linhas:");
-  var numbersAtTheEnd = /\d+$/gm;
-  console.log(numbersAtTheEnd);
+  var numbersAtTheEnd = new RegExp("\\d+$", "gm");
+  console.log("Regex:" , numbersAtTheEnd);
 
   /*
 Verifique se a regex acima casa com o texto na variável `otherText`,
@@ -60,6 +61,7 @@ O resultado deve ser:
   var otherText =
     "Silvio Santos, nome artístico de Senor Abravanel (Rio de Janeiro, 12\n de dezembro de 1930), é um apresentador de televisão e empresário brasileiro.\n Proprietário do Grupo Silvio Santos, que inclui empresas como a Liderança\n Capitalização (administradora da loteria Tele Sena), a Jequiti Cosméticos e o\n Sistema Brasileiro de Televisão (mais conhecido como SBT), Silvio Santos possui\n um patrimônio avaliado em aproximadamente 6\n bilhões de reais.";
   console.log("\nNúmeros no final da linha:\n\n", otherText, "\n");
+  
   console.log(otherText.match(numbersAtTheEnd));
 
   /*
@@ -93,16 +95,15 @@ para exemplificar.
     "\n"
   );
 
-  function hasClass(markup, cssClass) {
-    var regex = new RegExp(
-      "[\"'](?:[\\w\\s]+)?" + cssClass + "(:?[\\w\\s]+)?[\"']",
-      "gm"
-    );
+  var classes = ["container", "date", "text", "main", "excerpt"];
+  
+  function hasClass (markup, cssClass) {
+    var regex = new RegExp("[\"'](?:\\w+\\s)?" + cssClass, "g");
     return regex.test(markup);
   }
-  var classes = ["container", "text", "date", "excerpt", "main"];
 
-  classes.forEach(function(cssClass) {
-    console.log(hasClass(markup, cssClass) + " para a classe " + cssClass);
-  });
+  classes.forEach((className) => {
+    console.log(hasClass(markup, className), "para a classe " + className);
+  })
+
 })();
