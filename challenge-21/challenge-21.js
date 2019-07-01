@@ -5,7 +5,6 @@ As regras para criação do cronômetro são as seguintes:
 2. Crie um campo `input` do tipo `text`, e inicie-o com um valor 0 (zero).
 Ele será o nosso cronômetro;
 3. Crie 3 botões para as ações do cronômetro: Start, Stop e Reset;
-
 4. Ao clicar em Start, o valor do campo deve ser incrementado de 1 em 1, a
 cada segundo;
 5. Ao clicar em Stop, o cronômetro deve parar de contar;
@@ -15,38 +14,33 @@ Utilize o atributo data-js para nomear o campo e os botões. Você pode
 usar o nome que achar melhor, desde que ele seja semântico, ou seja, o nome
 dado ao elemento HTML deve definir o que o elemento é ou o que ele faz.
 */
+// ?
 
-(function(win, doc) {
-  "use strict";
-  var $timer = doc.querySelector("input[data-js=timer]");
-  var $start = doc.querySelector("button[data-js=start]");
-  var $stop = doc.querySelector("button[data-js=stop]");
-  var $reset = doc.querySelector("button[data-js=reset]");
-  var interval = 0;
+(function (win, doc) {
+    "use strict";
+    var $inputTimer = doc.querySelector("[data-js='timer']");
+    var $buttonStart = doc.querySelector("[data-js='start']");
+    var $buttonStop = doc.querySelector("[data-js='stop']");
+    var $buttonReset = doc.querySelector("[data-js='reset']");
+    var timer = undefined;
 
-  function chronometer() {
-    $timer.value = +$timer.value + 1;
-    interval = win.setTimeout(chronometer, 1000);
-  }
+    function start() {
+        $inputTimer.value = +$inputTimer.value + 1;
+        timer = win.setTimeout(start, 1000);
+        return timer; 
+    }
 
-  function stopTimer() {
-    win.clearTimeout(interval);
-    interval = 0;
-  }
+    function stop() {
+        win.clearTimeout(timer);
+    }
 
-  function resetTimer() {
-    stopTimer();
-    $timer.value = 0;
-  }
+    function reset() {
+        stop();
+        $inputTimer.value = 0;
+    }
 
-  $start.addEventListener(
-    "click",
-    function() {
-      if (interval !== 0) return;
-      chronometer();
-    },
-    false
-  );
-  $stop.addEventListener("click", stopTimer, false);
-  $reset.addEventListener("click", resetTimer, false);
+    $buttonStart.addEventListener("click", start, false);
+    $buttonStop.addEventListener("click", stop, false);
+    $buttonReset.addEventListener("click", reset, false);
+
 })(window, document);
