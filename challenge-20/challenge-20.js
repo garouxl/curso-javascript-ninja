@@ -1,6 +1,4 @@
-(function(win, doc) {
-  "use strict";
-  /*
+/*
 1. Envolva todo o conteúdo desse desafio em uma IIFE.
 2. Adicione a diretiva 'use strict';
 3. Passe por parâmetro para a IIFE os objetos window e document.
@@ -10,44 +8,47 @@ a marcação criada nele para fazer nosso desafio ;)
 O HTML NÃO PODE ser alterado!
 */
 
+(function(win, doc) {
+  "use strict";
+
   /*
 Ao carregar a página, pergunte ao usuário "Qual o seu nome?". Atribua o
 resultado à uma variável chamada `username`. Se o usuário não digitar um
 nome, `username` deve receber "Desconhecido".
 Com a resposta, mostre um alert com a mensagem "Bem vindo [USERNAME]!"
 */
+  // ?
   var username = win.prompt("Qual seu nome?") || "Desconhecido";
-  win.alert("Bem vindo " + username + "!");
+  win.alert("Bem vindo " + username);
 
   /*
 Agora, pergunte ao usuário "Qual o seu e-mail?", atribuindo o resultado à
 uma variável chamada `email`.
 */
-  var email = win.prompt("Qual seu e-mail?");
-
-  /*
+  var email = win.prompt("Qual seu E-Mail?");
+/*
 - Selecione o input de "Nome", atribuindo-o à uma variável chamada
 `$inputUsername`.
 */
-  var $inputUsername = doc.querySelector("input[type=text]");
+    var $inputUsername = doc.querySelector("input[type='text']"); 
 
   /*
 - Selecione o input de "Email", atribuindo-o à uma variável chamada
 `$inputEmail`.
 */
-  var $inputEmail = doc.querySelector("input[type=email]");
+    var $inputEmail = doc.querySelector("input[type='email']"); 
 
   /*
 - Selecione o campo de "Mensagem", atribuindo-o à uma variável chamada
 `$message`.
 */
-  var $message = doc.querySelector("textarea");
+    var $message = doc.querySelector("textarea"); 
 
   /*
 - Selecione o botão de envio do formulário, atribuindo-o à uma variável
 chamada `$button`.
 */
-  var $button = doc.querySelector("button");
+  var $button = doc.querySelector("button")
 
   /*
 Preencha os campos de "Nome" e "Email" que estão no documento com os valores
@@ -55,6 +56,7 @@ entrados pelo usuário.
 */
   $inputUsername.value = username;
   $inputEmail.value = email;
+
   /*
 Adicione um listener de evento de click ao botão que faça o seguinte:
 1. Verificar se todos os campos estão preenchidos:
@@ -79,53 +81,31 @@ Se for confirmado, mostre um alerta com a mensagem:
 Caso contrário, mostre um alerta com a mensagem:
     - "Não enviado."
 */
-  $button.addEventListener(
-    "click",
-    function(event) {
-      event.preventDefault();
-      var validate = [];
-      var allOk = undefined;
-      validate.push(
-        hasData($inputUsername.value, "Preencha o nome do usuário!")
-      );
-      validate.push(hasData($inputEmail.value, "Preencha o e-mail!"));
-      validate.push(hasData($message.value, "Preencha a mensagem!"));
-      validate.push(hasData(isValidEmail($inputEmail), "O e-mail é invalido!"));
-      allOk = validate.every(function(curr, index, array) {
-        return curr === true;
-      });
-      verifyData(allOk);
-    },
-    false
-  );
 
-  function isValidEmail(mail) {
-    return /^[\w+.]+@\w+\.\w{2,}(?:\.\w{2})?$/g.test(mail);
-  }
+  function validate(event) {
+    event.preventDefault();
 
-  function hasData(data, info) {
-    if (!!data !== false) return true;
-    alert(info);
-    return false;
-  }
-
-  function verifyData(confirm) {
-    if (confirm === false) {
-      alert("Dados não enviados devido a erro no formulário");
-      return false;
+    if ($inputUsername.value === "" || $inputUsername.value === "Desconhecido") {
+      return alert("Preencha o nome do usuário!");
     }
-    return sendData();
+    if (!isValidMail($inputEmail.value)) {
+      return alert("Preencha o E-Mail!");
+    }
+    if ($message.value === "") {
+      return alert("Preencha a mensagem!");
+    }
+
+    if (confirm("Tem certeza que deseja enviar o formulário?"))
+      return alert("Enviado!");
+    return alert("Não enviado!");
+
   }
 
-  function sendData() {
-    var confirmation = confirm("Tem certeza que deseja enviar o formulário?");
-    if (confirmation) {
-      alert("Enviado com sucesso!");
-      return true;
-    }
-    alert("Não enviado.");
-    return false;
-  }
+  $button.addEventListener("click", validate, false);
+  $button.addEventListener("keydown", function(event) {
+    if (event.keyCode === 13)
+      validate(event);  
+  }, false);
   /*
 Crie uma função chamada `isValidEmail`, que será usada na validação do
 envio do formulário.
@@ -152,4 +132,9 @@ Alguns e-mails inválidos:
     - "rita-marica@titica.a.b"
     - "agua_@evida.br.com"
 */
+  function isValidMail(mail) {
+    var regex = new RegExp("^[\\w.+]+[^_]@\\w+[\\w.]{2,}$", "g");
+    return regex.test(mail);
+    
+  }
 })(window, document);
