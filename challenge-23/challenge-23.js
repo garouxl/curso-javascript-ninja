@@ -24,8 +24,109 @@ input;
 - Ao pressionar o botão "CE", o input deve ficar zerado.
 */
 
-
 (function(win, doc) {
+  "use strict";
+  const DOM = {
+    visor: doc.querySelector("[data-js='visor']"),
+    numbers: doc.querySelectorAll("[data-js='button-number']"),
+    operations: doc.querySelectorAll("[data-js='button-operation']"),
+    equal: doc.querySelector("[data-js='button-equal']"),
+    clear: doc.querySelector("[data-js='button-ce']"),
+    all: doc.querySelectorAll("button")
+  };
+
+  function setEventListeners() {
+    return Array.prototype.forEach.call(arguments, function(item) {
+      item.addEventListener("click", handleClick, false);
+    });
+  }
+
+  setEventListeners.apply(setEventListeners, DOM.all);
+  /* setEventListeners.apply(setEventListeners, DOM.operations);
+    setEventListeners.call(setEventListeners, DOM.visor);
+    setEventListeners.call(setEventListeners, DOM.equal);
+    setEventListeners.call(setEventListeners, DOM.clear); */
+
+  function handleClick() {
+    var that = this;
+    var handlers = {
+      "button-ce": clear,
+      "button-equal": calculate,
+      "button-number": setDigit,
+      "button-operation": setOperator
+    };
+    return handlers[this.getAttribute("data-js")].call(that);
+  }
+
+  function clear() {
+    return (DOM.visor.value = "");
+  }
+
+  function setDigit() {
+    return (DOM.visor.value += this.value);
+  }
+
+  function setOperator() {
+    if (verifyLastOperand.call(DOM.visor.value))
+      return (DOM.visor.value = DOM.visor.value
+        .slice(0, -1)
+        .concat(this.value));
+    return (DOM.visor.value += this.value);
+  }
+
+  function verifyLastOperand() {
+    return /[x\÷\-\+]/.test(this.split("").pop());
+  }
+
+  function removeLastItemIfOperator() {
+    return verifyLastOperand.call(this) ? this.slice(0, -1) : this;
+  }
+
+  function calculate() {
+    var value = removeLastItemIfOperator.call(DOM.visor.value);
+    return (DOM.visor.value = value.match(/\d+[\x\-\+\÷]?/g).reduce(function(acc, actual) {
+      var firstValue = formatValues(acc).value1;
+      var operand = formatValues(acc).operator;
+      var lastValue = formatValues(actual).value2;
+      var lastOperand = formatValues(actual).nextOperator
+      var operation = setOperation(operand);
+      return operation(firstValue, lastValue) + lastOperand;
+    }));
+  }
+
+  function formatValues (target) {
+    return {
+      value1: target.slice(0, -1),
+      operator: target.split("").pop(),
+      value2: removeLastItemIfOperator.call(target),
+      nextOperator: verifyLastOperand.call(target) ? target.split("").pop() : ""
+    }
+
+  }
+
+  function setOperation(operator) {
+    var operation = {
+      "+": function sum(value1, value2) {
+        return Number(value1) + Number(value2);
+      },
+      "-": function subtraction(value1, value2) {
+        return Number(value1) - Number(value2);
+      },
+      "x": function multiplication(value1, value2) {
+        return Number(value1) * Number(value2);
+      },
+      "÷": function division(value1, value2) {
+        return Number(value1) / Number(value2);
+      }
+    }
+    return operation[operator];
+
+  }
+})(window, document);
+
+// antigo de outra forma
+
+/* (function(win, doc) {
   "use strict";
 
   var DOMInputs;
@@ -139,3 +240,4 @@ input;
 
   initialize();
 })(window, document);
+ */
