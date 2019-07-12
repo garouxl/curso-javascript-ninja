@@ -28,10 +28,6 @@ input;
   "use strict";
   const DOM = {
     visor: doc.querySelector("[data-js='visor']"),
-    numbers: doc.querySelectorAll("[data-js='button-number']"),
-    operations: doc.querySelectorAll("[data-js='button-operation']"),
-    equal: doc.querySelector("[data-js='button-equal']"),
-    clear: doc.querySelector("[data-js='button-ce']"),
     all: doc.querySelectorAll("button")
   };
 
@@ -42,10 +38,6 @@ input;
   }
 
   setEventListeners.apply(setEventListeners, DOM.all);
-  /* setEventListeners.apply(setEventListeners, DOM.operations);
-    setEventListeners.call(setEventListeners, DOM.visor);
-    setEventListeners.call(setEventListeners, DOM.equal);
-    setEventListeners.call(setEventListeners, DOM.clear); */
 
   function handleClick() {
     var that = this;
