@@ -20,42 +20,48 @@ Dica: olhe os erros que acontecem no console, e vá resolvendo um a um.
 Só passe para o próximo problema quando tiver resolvido o anterior :)
 */
 // ?
-// minha versão
-(function() {
+(function (doc) {
   "use strict";
-  function DOM(targetNode) {
-    this.element = document.querySelectorAll(targetNode);
+
+  function DOM(elements) {
+    this.element = this.getDOMElements(elements);
   }
 
-  DOM.prototype.on = function(event, callBack) {
-    this.handleNodes(this.element, event, callBack, "addEventListener");
+  DOM.prototype.getDOMElements = function getDOMElements(elements) {
+    return document.querySelectorAll(elements);
   };
 
-  DOM.prototype.off = function(event, callBack) {
-    this.handleNodes(this.element, event, callBack, "removeEventListener");
-  };
+  DOM.prototype.on = function on(event, callBack) {
+    this.setListener(event, callBack, "addEventListener");
+  }
 
-  DOM.prototype.get = function() {
-    return this.element;
-  };
+  DOM.prototype.off = function off(event, callBack) {
+    this.setListener(event, callBack, "removeEventListener");
+  }
 
-  DOM.prototype.handleNodes = function(elementList, event, callBack, listener) {
-    return elementList.forEach(function(item) {
-      item[listener](event, callBack);
+  DOM.prototype.setListener = function (event, callBack, eventListener) {
+    return Array.prototype.forEach(this.element,function (item) {
+      item[eventListener](event, callBack, false);
     });
-  };
+  }
+
+  DOM.prototype.get = function get() {
+    return this.element;
+  }
 
   var $a = new DOM('[data-js="link"]');
-  $a.on("click", function clicker(e) {
+  $a.on("click", function handleclick(e) {
     e.preventDefault();
-    console.log("clicou-meu");
-    $a.off("click", clicker);
+    console.log("clicou");
+    $a.off("click", handleclick);
   });
 
   console.log("Elementos selecionados:", $a.get());
   console.log("$a é filho de body?", $a.get()[0].parentNode === document.body);
-})();
 
+})(document);
+
+/*
 // versão curso
 (function() {
   "use strict";
@@ -83,14 +89,5 @@ Só passe para o próximo problema quando tiver resolvido o anterior :)
   DOM.prototype.get = function() {
     return this.element;
   };
-
-  var $a = new DOM('[data-js="link"]');
-  $a.on("click", function handleclick(e) {
-    e.preventDefault();
-    console.log("clicou");
-    $a.off("click", handleclick);
-  });
-
-  console.log("Elementos selecionados:", $a.get());
-  console.log("$a é filho de body?", $a.get()[0].parentNode === document.body);
 })();
+ */
