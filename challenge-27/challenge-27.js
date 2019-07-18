@@ -19,6 +19,126 @@ Crie os seguintes métodos para verificação de tipo:
 - isArray, isObject, isFunction, isNumber, isString, isBoolean, isNull.
 O método isNull deve retornar `true` se o valor for null ou undefined.
 */
+(function(win, doc) {
+    "use strict";
+
+    function DOM(elements) {
+        this.element = this.getDOMElements(elements);
+    }
+
+    DOM.prototype.getDOMElements = function getDOMElements(elements) {
+        return doc.querySelectorAll(elements);
+      };
+
+    DOM.prototype.on = function on(event, callBack) {
+        this.setListener(event, callBack, "addEventListener");
+    };
+
+    DOM.prototype.off = function off(event, callBack) {
+        this.setListener(event, callBack, "removeEventListener");
+    };
+
+    DOM.prototype.setListener = function(event, callBack, eventListener) {
+        return Array.prototype.forEach.call(this.element, function(item) {
+            item[eventListener](event, callBack, false);
+        });
+    };
+
+    DOM.prototype.get = function get() {
+        return this.element.length > 1 ? this.element : this.element[0];
+    };
+    // adiciona funcionalidades de Array no objeto DOM:
+    DOM.prototype.arrayHandler = function arrayHandler (method, callBack) {
+        return Array.prototype[method].apply(this.element, callBack);
+    };
+
+    DOM.prototype.forEach = function forEach() {
+        return this.arrayHandler("forEach", arguments);
+    };
+
+    DOM.prototype.map = function map() {
+        return this.arrayHandler("map", arguments);
+    };
+
+    DOM.prototype.filter = function filter() {
+        return this.arrayHandler("filter", arguments);
+    };
+
+    DOM.prototype.reduce = function reduce() {
+        return this.arrayHandler("reduce", arguments);
+    };
+
+    DOM.prototype.reduceRight = function reduceRight() {
+        return this.arrayHandler("reduceRight", arguments);
+    };
+
+    DOM.prototype.every = function every() {
+        return this.arrayHandler("every", arguments);
+    };
+
+    DOM.prototype.some = function some() {
+        return this.arrayHandler("some", arguments);
+    };
+    // retorna o tipo:
+    DOM.typeOfObject = obj => {
+        return Object.prototype.toString
+            .call(obj)
+            .replace(/\[object (\w+)\]/g, "$1")
+            .toLowerCase();
+    };
+
+    // teste de validação para tipos especificos
+    DOM.isArray = obj => DOM.typeOfObject(obj) === "array";
+
+    DOM.isFunction = obj => DOM.typeOfObject(obj) === "function";
+
+    DOM.isObject = obj => DOM.typeOfObject(obj) === "object";
+
+    DOM.isArguments = obj => DOM.typeOfObject(obj) === "arguments";
+
+    DOM.isNumber = obj => DOM.typeOfObject(obj) === "number";
+
+    DOM.isString = obj => DOM.typeOfObject(obj) === "string";
+
+    DOM.isBoolean = obj => DOM.typeOfObject(obj) === "boolean";
+
+    DOM.isNull = obj => DOM.typeOfObject(obj) === "null";
+
+    DOM.isUndefined = obj => DOM.typeOfObject(obj) === "undefined";
+
+    var $a = new DOM('[data-js="link"]');
+    $a.on("click", function handleclick(e) {
+        e.preventDefault();
+        console.log("clicou");
+        $a.off("click", handleclick);
+    });
+
+    console.log("Elementos selecionados:", $a.get());
+    console.log(
+        "$a é filho de body?",
+        $a.get()[0].parentNode === document.body
+    );
+    $a.forEach(function(item, index) {
+        console.log(item, index, item.firstChild.nodeValue);
+    });
+    var dataJs;
+    dataJs = $a.map(function(item) {
+        return item.getAttribute("data-js");
+    });
+    console.log(dataJs);
+    dataJs = $a.reduce(function(acc, item, index) {
+        return acc + " " + item.getAttribute("data-js") + index;
+    }, 0);
+    console.log(dataJs);
+
+    console.log(DOM.isArray([1, 2, 3]));
+    console.log(DOM.isNumber(1));
+    console.log(DOM.isString("1"));
+    console.log(DOM.isUndefined(undefined));
+    console.log(DOM.isNull(null));
+    console.log(DOM.isFunction(function() {}));
+})(window, document);
+
 // minha versão
 /* (function() {
   "use strict";
@@ -44,6 +164,7 @@ O método isNull deve retornar `true` se o valor for null ou undefined.
     });
   };
   // - forEach, map, filter, reduce, reduceRight, every e some.
+
   DOM.prototype.forEach = function(callBack) {
     return Array.prototype.forEach.call(this.element, callBack);
   };
@@ -177,7 +298,7 @@ O método isNull deve retornar `true` se o valor for null ou undefined.
     })
   );
 })(); */
-
+/* 
 // versão curso
 (function() {
   ("use strict");
@@ -207,6 +328,7 @@ O método isNull deve retornar `true` se o valor for null ou undefined.
   };
 
   //- forEach, map, filter, reduce, reduceRight, every e some.
+
   DOM.prototype.forEach = function() {
     return Array.prototype.forEach.apply(this.element, arguments);
   };
@@ -242,7 +364,7 @@ O método isNull deve retornar `true` se o valor for null ou undefined.
     return objType === type;
   }
   DOM.prototype.isArray = function(param) {
-    return handleObject(param, "[object Array]");
+    return handleObject(param, "[object Array]");                               
   };
 
   DOM.prototype.isObject = function(param) {
@@ -303,3 +425,4 @@ O método isNull deve retornar `true` se o valor for null ou undefined.
   console.log(DOM.prototype.isNull());
   console.log(DOM.prototype.isFunction(function() {}));
 })();
+ */
