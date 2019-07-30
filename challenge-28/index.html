@@ -14,13 +14,29 @@
             padding: 5px 0;
             margin: 5px 0;
         }
+        button {
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
+    <style>
+        body * {
+            font-family: Monoid;
+            font-size: 12px;
+            text-align: left;
+            padding: 5px 0;
+            margin: 5px 0;
+        }
+        button {
+            cursor: pointer;
+        }
+    </style>
     <form data-js="form-cep">
         <input data-js="input-cep" type="text">
         <button data-js="submit" type="submit">requisitar</button>
+        <button data-js="reset" type="button" value="reset">reset</button>
     </form>
     <div data-js="status"></div>
     <div data-js="cep-info">

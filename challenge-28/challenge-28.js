@@ -27,6 +27,117 @@
   */
 
 (function(DOM) {
+  "use strict";
+  function app() {
+    var $inputCep, $submit, $reset, $status, $logradouro, $bairro, $estado, $cidade, $cep, xhr, clearData;
+
+    function initVariables() {
+      $inputCep = new DOM("[data-js='input-cep']");
+      $submit = new DOM("[data-js='submit']");
+      $reset = new DOM("[data-js='reset']");
+      $status = new DOM("[data-js='status']");
+      $logradouro = new DOM("[data-js='logradouro']");
+      $bairro = new DOM("[data-js='bairro']");
+      $estado = new DOM("[data-js='estado']");
+      $cidade = new DOM("[data-js='cidade']");
+      $cep = new DOM("[data-js='cep']");
+      clearData = {
+        logradouro: "---",
+        bairro: "---",
+        uf: "---",
+        localidade: "---",
+        cep: "---"
+      };
+    }
+
+    function isCepNotCorrect() {
+      var regex = new RegExp("\\d{5}[/.-]?\\d{3}", "g");
+      return !regex.test(this);
+    }
+
+    function formatCep() {
+      return this.replace(/\D/g, "");
+    }
+
+    function initXhr() {
+      xhr = new XMLHttpRequest();
+      xhr.open("get", "https://viacep.com.br/ws/" + this + "/json/");
+      xhr.send();
+      $status.get().innerText = setStatus.call("loading");
+      xhr.addEventListener(
+        "readystatechange",
+        function() {
+          if (isRequestOk.call(this)) handleXhr.call(this);
+        },
+        false
+      );
+    }
+
+    function handleXhr() {
+      try {
+        var data = JSON.parse(this.responseText);
+        if (data.hasOwnProperty("erro")) throw new Error("O cep está errado");
+        setInfoOnForm.call(data);
+        $status.get().innerText = setStatus.call("success");
+      } catch (error) {
+        $status.get().innerText = setStatus.call("error");
+        setInfoOnForm.call(clearData);
+      }
+    }
+
+    function isRequestOk() {
+      return this.readyState === 4 && this.status === 200;
+    }
+
+    function setInfoOnForm() {
+      $logradouro.get().innerText = this.logradouro;
+      $bairro.get().innerText = this.bairro;
+      $estado.get().innerText = this.uf;
+      $cidade.get().innerText = this.localidade;
+      $cep.get().innerText = this.cep;
+    }
+    
+    function setStatus() {
+      var status = {
+        error: "O CEP está errado!",
+        fill: "Por favor insira um Cep válido!",
+        loading: "Carregando informações...",
+        success: "Informações carregadas!"
+      };
+      return status[this] || "Mensagem não reconhecida";
+    }
+
+    function reset() {
+        $inputCep.get().value = "";
+        setInfoOnForm.call(clearData);
+        $status.get().innerText = "";
+    }
+
+    return {
+      init: function() {
+        initVariables();
+        $submit.on(
+          "click",
+          function(event) {
+            event.preventDefault();
+            if (isCepNotCorrect.call($inputCep.get().value))
+              return ($status.get().innerText = setStatus.call("fill"));
+            initXhr.call(formatCep.call($inputCep.get().value));
+          },
+          false
+        );
+        $reset.on("click", reset, false);
+      }
+    };
+  }
+
+  var APP = app();
+  APP.init();
+  
+})(window.DOM);
+
+/* 
+(function(DOM) {
   ("use strict");
 
   var app = (function app() {
@@ -142,4 +253,4 @@
 
   app.init();
   window.APP = app;
-})(window.DOM);
+})(window.DOM); */
