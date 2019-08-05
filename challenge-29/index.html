@@ -73,10 +73,15 @@
             border-bottom: 1px solid #666;
             margin: 0;
             padding: 5px;
+            text-align: center;
         }
 
-        tbody th:nth-child(odd) {
+        tbody tr:nth-child(odd) {
             background: #eee
+        }
+
+        tbody td {
+            text-align: center;
         }
 
         tr:last-child {
@@ -95,47 +100,52 @@
             width: 100px;
             height: auto;
         }
+        .error {
+            border: 1px solid red;
+        }
+        .show {
+            opacity: 1;
+        }
     </style>
 </head>
 
 <body>
-    <h1 data-js="companyName"></h1>
-    <h2 data-js="companyFone"></h2>
+    <div data-js="companyInfo">
+        <h1></h1>
+        <h2></h2>
+    </div>
     <section>
         <form data-js="form-register">
             <legend>Cadastro de carro:</legend>
-            <label for="img">Imagem: </label>
-            <input disabled id="img" data-js="input-img" type="text">
-            <label for="model">Modelo/Marca</label>
-            <input disabled id="model" data-js="input-model" type="text">
-            <label for="year">Ano:</label>
-            <input disabled id="year" data-js="input-year" type="text">
-            <label for="plate">Placa</label>
-            <input disabled id="plate" data-js="input-plate" type="text">
-            <label for="color">Cor: </label>
-            <input disabled id="color" data-js="input-color" type="text">
+            <label for="imagem">Imagem: </label>
+            <input disabled id="imagem" data-js="input-img" type="text">
+            <label for="modelo">Modelo/Marca</label>
+            <input disabled id="modelo" data-js="inputs" type="text">
+            <label for="ano">Ano:</label>
+            <input disabled id="ano" data-js="inputs" type="text">
+            <label for="placa">Placa</label>
+            <input disabled id="placa" data-js="inputs" type="text">
+            <label for="cor">Cor: </label>
+            <input disabled id="cor" data-js="inputs" type="text">
+            <label for="portas">portas: </label>
+            <input disabled id="portas" data-js="inputs" type="text">
             <button disabled data-js="submit" type="submit">cadastrar</button>
+            <button data-js="reset" type="text">reset</button>
         </form>
+        
         <div data-js="status"></div>
     </section>
-    <table>
+    <table data-js="registered-cars">
         <caption>Lista de carros cadastrados na loja:</caption>
         <thead>
             <tr>
-                <th>Imagem</th>
-                <th>Modelo</th>
-                <th>Ano</th>
-                <th>Placa</th>
-                <th>Cor</th>
             </tr>
         </thead>
-        <tfoot>
-            <th colspan="5">Garou Carros&Carros</th>
-        </tfoot>
-        <tbody data-js="registered-cars">
+        <tbody>
         </tbody>
     </table>
     <script src=dom.js></script>
+    <script src=xhr.js></script>
     <script src=util.js></script>
     <script src=challenge-29.js></script>
 </body>

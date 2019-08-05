@@ -1,7 +1,4 @@
-(function(DOM, UTIL, win, doc) {
-  "use strict";
-
-  /*
+/*
   Vamos estruturar um pequeno app utilizando módulos.
   Nosso APP vai ser um cadastro de carros. Vamos fazê-lo por partes.
   A primeira etapa vai ser o cadastro de veículos, de deverá funcionar da
@@ -35,8 +32,160 @@
   E aqui nesse arquivo, faça a lógica para cadastrar os carros, em um módulo
   que será nomeado de "app".
   */
+ //versao curso:
 
-  var app = (function() {
+
+//V2
+(function(win, doc, DOM, XHR) {
+  "use strict";
+  let app = (() => {
+    const $inputs = DOM('[data-js="form-register"] input');
+    const $submit = DOM('[data-js="submit"]');
+    const $reset = DOM('[data-js="reset"]');
+    const $status = DOM('[data-js="status"]');
+    const $table = DOM('[data-js="registered-cars"]');
+    
+    return {
+      init: function init () {
+        app.setCompanyName(setCompanyInfo);
+        app.removeBlock.apply($submit, $submit); //aquio 2o param é um array
+        app.removeBlock.call($inputs); //o metodo só aceita array como param
+        $submit.on("click", app.handleSubmit);
+        $reset.on("click", app.reset);
+      },
+
+      setCompanyName: function setCompanyName(callBack) {
+        const getCompany = XHR("company.json", "get", "text", callBack);
+        getCompany.init();
+      },
+
+      removeBlock: function removeBlock() {
+        return Array.prototype.forEach.call(this.element, function(item) {
+          item.removeAttribute("disabled");
+        });
+      },
+      
+      handleSubmit: function handleSubmit(event) {
+        event.preventDefault();
+        let events = {
+          true: () => {
+            let inputsData = getData.apply($inputs);
+            setStatusMessage.call($status,"none");
+            populateTableHeader.call(inputsData, $table);
+            populateTableBody.call(inputsData, $table);
+            showTable.call($table.get());
+            setStatusMessage.call($status,"success");
+          },
+          false: () => {
+            setStatusMessage.call($status,"error");
+          }
+        };
+        events[validateFields.call($inputs).toString()]();
+      },
+
+      reset: function reset(event) {
+        event.preventDefault();
+        $inputs.forEach(item => {
+          item.value = "";
+          item.classList.value = item.classList.value.replace(/error/g, "");
+        });
+        setStatusMessage.call($status, "none");
+      }
+    };
+
+    function setCompanyInfo(data) {
+      const $company = DOM('[data-js="companyInfo"]');
+      $company.get().firstElementChild.textContent = data.name;
+      $company.get().lastElementChild.textContent = data.phone;
+    }
+
+    function validateFields() {
+      let evaluetad = this.map(function(item) {
+        evaluateField.call(item);
+        return Boolean(item.value.length);
+      });
+      return evaluetad.every(item => {
+        return item === true;
+      });
+    }
+
+    function evaluateField() {
+      const hasClass = /error/g.test(this.classList.value);
+      return this.value === ""
+        ? (this.classList.value += hasClass ? "" : " error")
+        : (this.classList.value = this.classList.value.replace(/error/g, ""));
+    }
+
+    function setStatusMessage(message) {
+      const statusMessage = {
+        error: "Preencha o campo sinalizado em vermelho",
+        success: "Carro cadastrado com sucesso",
+        none: ""
+      };
+      this.get().innerText = statusMessage[message];
+    }
+
+    function getData() {
+      return this.map(item => {
+        return { name: item.id, value: item.value };
+      });
+    }
+
+    function showTable() {
+      const hasClass = /show/g.test(this.classList.value);
+      return (this.classList.value += hasClass ? "" : " show");
+    }
+
+    function isTableHeaderRendered() {
+      return Boolean(this.get().querySelector("thead tr th"));
+    }
+
+    function populateTableHeader(table) {
+      if ( isTableHeaderRendered.call(table) )
+        return;
+      let domFragmentHeader = doc.createDocumentFragment();
+      this.forEach(item => {
+        let $th = doc.createElement("th");
+        $th.innerText = item.name;
+        domFragmentHeader.appendChild($th);
+      });
+      table
+        .get()
+        .querySelector("thead tr")
+        .appendChild(domFragmentHeader);
+    }
+
+    function populateTableBody(table) {
+      let domFragmentBody = doc.createDocumentFragment();
+      let $tr = doc.createElement("tr");
+      this.forEach(item => {
+        let $td = doc.createElement("td");
+        if (item.name === "imagem") {
+            let $img = doc.createElement("img");
+            $img.setAttribute("src", item.value);
+            $td.appendChild($img);
+            return $tr.appendChild($td);
+        }
+        $td.innerText = item.value;
+        return $tr.appendChild($td);
+      });
+      domFragmentBody.appendChild($tr);
+      table
+        .get()
+        .querySelector("tbody")
+        .appendChild(domFragmentBody);
+    }   
+  })();
+  win.app = app;
+})(window, document, window.DOM, window.XHR);
+
+app.init();
+
+/*
+v1
+(function(DOM, UTIL, win, doc) {
+  "use strict";
+    var app = (function() {
     var $title,
       $fone,
       $submit,
@@ -103,9 +252,9 @@
   })();
 
   app.init();
-  //win.APP = app;
+  //win.APP = app
 })(window.DOM, window.UTIL, window, document);
 
-/* window.setTimeout(function () {
+window.setTimeout(function () {
   APP.init();
 }, 2000); */

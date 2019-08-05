@@ -1,3 +1,7 @@
+// não utlizado na V2 pois usei os metodos call e apply script principal
+
+/*
+v1
 (function(win) {
   "use strict";
   var util = function() {
@@ -58,4 +62,4 @@
     };
   };
   win.UTIL = util();
-})(window);
+})(window); */
