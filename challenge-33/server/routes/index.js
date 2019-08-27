@@ -23,7 +23,7 @@ router.delete('/', function(req, res) {
   data = data.filter(function(car) {
     return car.plate !== req.body.plate;
   });
-  res.json({ message: 'success' });
+  res.json({ message: 'success', cars: data });
 });
 
 module.exports = router;
